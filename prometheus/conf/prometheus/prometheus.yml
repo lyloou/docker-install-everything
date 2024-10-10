@@ -9,7 +9,7 @@ alerting:
  alertmanagers:
  - static_configs:
     - targets:
-        - "192.168.0.100:9093"
+        - "172.20.130.121:9093"
 
 rule_files:
   - /etc/prometheus/rules/*.rules
@@ -22,10 +22,30 @@ scrape_configs:
 
   - job_name: node
     static_configs:
-      - targets: ['192.168.0.103:9100','pushgateway:9091']
+      - targets: ['172.20.130.121:9100','pushgateway:9091']
 
-  - job_name: 'mysql-131'
+  - job_name: 'media-sync-131'
+    scrape_interval: 5s
+    metrics_path: '/actuator/prometheus'
     static_configs:
-     - targets: ['192.168.0.131:9104']
+     - targets: ['172.20.130.121:8081']
        labels:
-          instance: mysql
+          instance: media-sync
+  - job_name: 'redis_exporter_targets'
+    static_configs:
+      - targets:
+        - redis://172.20.130.121:16379
+    metrics_path: /scrape
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: redis-exporter:9121
+
+  ## config for scraping the exporter itself
+  - job_name: 'redis_exporter'
+    static_configs:
+      - targets:
+        - redis-exporter:9121

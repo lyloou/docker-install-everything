@@ -1,5 +1,6 @@
-# docker-install-everything
+clone from https://github.com/FX-Max/docker-install-everything
 
+# docker-install-everything
 > install all environments using docker-compose.
 > 使用 docker-compose 安装各种服务。
 
@@ -13,7 +14,7 @@
 ## 使用方法
 
 ```
-git clone https://github.com/FX-Max/docker-install-everything.git
+git clone https://github.com/lyloou/docker-install-everything.git
 cd docker-install-everything
 # 进入里想要安装的服务文件夹后，按照文件夹内的 README 文件介绍使用。
 # 以安装 redis 为例：

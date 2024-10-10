@@ -42,6 +42,8 @@ services:
       - "9091:9091"
     volumes:
       - ./data/prometheus/pushgateway_data:/var/lib/pushgateway
+    networks:
+      - net-prometheus
 
   alertmanager:
     image: prom/alertmanager
@@ -54,6 +56,22 @@ services:
     volumes:
       - ./conf/alertmanager:/etc/alertmanager
       - ./data/prometheus/alertmanager_data:/var/lib/alertmanager
-
+    networks:
+      - net-prometheus
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.51.0 
+    container_name: redis-exporter
+    # restart: unless-stopped
+    command:
+      - "-redis.password-file=/redis_passwd.json"
+    volumes:
+      - /usr/share/zoneinfo/PRC:/etc/localtime
+      - ./conf/redis/redis_passwd.json:/redis_passwd.json
+    expose:
+      - 9121
+    ports:
+      - "9121:9121"
+    networks:
+      - net-prometheus
 networks:
   net-prometheus:
